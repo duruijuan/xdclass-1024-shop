@@ -50,8 +50,7 @@ public class JsonData {
      * @param msg
      * @return
      */
-    public static JsonData buildError(String
-                                              msg) {
+    public static JsonData buildError(String msg) {
         return new JsonData(-1, null, msg);
     }
 
@@ -73,4 +72,5 @@ public class JsonData {
     public static JsonData buildResult(BizCodeEnum codeEnum){
         return JsonData.buildCodeAndMsg(codeEnum.getCode(),codeEnum.getMessage());
     }
+
 }
