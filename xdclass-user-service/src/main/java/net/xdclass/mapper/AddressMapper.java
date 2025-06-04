@@ -2,6 +2,7 @@ package net.xdclass.mapper;
 
 import net.xdclass.model.AddressDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author duruijuan
  * @since 2025-06-03
  */
+
 public interface AddressMapper extends BaseMapper<AddressDO> {
 
 }
