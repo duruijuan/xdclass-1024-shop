@@ -20,6 +20,13 @@ import org.springframework.stereotype.Service;
 public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressMapper addressMapper;
+    /**
+     * description:
+     * @param id
+     * @return AddressDO
+     * @author: duruijuan
+     * @since: 2025-06-06 13:48
+     **/
     @Override
     public AddressDO detail(Long id) {
         AddressDO addressDO=addressMapper.selectOne(new QueryWrapper<AddressDO>().eq("id",id));

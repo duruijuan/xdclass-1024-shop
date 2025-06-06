@@ -26,6 +26,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class AddressTest {
     @Autowired
     private AddressService addressService;
+    /**
+     * description:
+     * @param
+     * @return void
+     * @author: duruijuan
+     * @since: 2025-06-06 13:50
+     **/
     @Test
     public void testAddressDetail(){
         AddressDO addressDO=addressService.detail(1L);
