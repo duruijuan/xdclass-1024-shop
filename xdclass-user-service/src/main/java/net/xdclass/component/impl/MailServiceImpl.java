@@ -1,7 +1,7 @@
-package net.xdclass.service.impl;
+package net.xdclass.component.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import net.xdclass.service.MailService;
+import net.xdclass.component.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -44,6 +44,7 @@ public class MailServiceImpl implements MailService {
         mailMessage.setTo(to);
         //邮件的主题
         mailMessage.setSubject(subject);
+
         //邮件的内容
         mailMessage.setText(content);
         mailSender.send(mailMessage);

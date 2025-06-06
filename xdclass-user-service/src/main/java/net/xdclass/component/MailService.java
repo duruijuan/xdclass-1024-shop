@@ -1,4 +1,4 @@
-package net.xdclass.service;
+package net.xdclass.component;
 
 /**
  * @projectName: xdclass-1024-shop

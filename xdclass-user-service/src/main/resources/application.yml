@@ -34,3 +34,4 @@ mybatis-plus:
 logging:
   level:
     root: INFO
+

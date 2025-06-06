@@ -1,9 +1,9 @@
 package net.xdclass.util;
-
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
+import java.util.Random;
 
 /**
  * @projectName: xdclass-1024-shop
@@ -14,6 +14,7 @@ import java.security.MessageDigest;
  * @since: 2025-06-05 19:30
  * @version: 1.0
  */
+
 public class CommonUtil {
     /**
      * 获取ip
@@ -93,5 +94,31 @@ public class CommonUtil {
         } catch (Exception exception) {
         }
         return null;
+    }
+    /**
+     * description:获取验证码随机数
+     * @param length
+     * @return String
+     * @author: duruijuan
+     * @since: 2025-06-06 15:40
+     **/
+    public static String getRandomCode(int length) {
+        String sources = "0123456789";
+        Random random = new Random();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            stringBuilder.append(sources.charAt(random.nextInt(9)));
+        }
+        return stringBuilder.toString();
+    }
+    /**
+     * description:获取当前时间戳
+     * @param
+     * @return long
+     * @author: duruijuan
+     * @since: 2025-06-06 16:51
+     **/
+    public static long getCurrentTimestamp(){
+        return System.currentTimeMillis();
     }
 }
