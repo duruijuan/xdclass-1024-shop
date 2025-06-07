@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * @projectName: xdclass-1024-shop
@@ -121,4 +122,16 @@ public class CommonUtil {
     public static long getCurrentTimestamp(){
         return System.currentTimeMillis();
     }
+    /**
+     * description:生成uuid
+     * @param
+     * @return String
+     * @author: duruijuan
+     * @since: 2025-06-07 17:25
+     **/
+    public static String generateUUID(){
+        return UUID.randomUUID().toString().replaceAll("_","").substring(0,32);
+
+    }
+
 }
