@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.spring.web.json.Json;
+
 
 /**
  * <p>
@@ -35,10 +35,13 @@ public class UserController {
      * 上传⽤户头像
      * <p>
      * 默认⽂件⼤⼩ 1M,超过会报错
-     *
+     * description:
      * @param file
-     * @return
+     * @return JsonData
+     * @author: duruijuan
+     * @since: 2025-06-07 18:24
      */
+
     @ApiOperation("⽤户头像上传")
     @PostMapping(value = "/upload")
     public JsonData
