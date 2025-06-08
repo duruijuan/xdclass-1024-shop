@@ -1,4 +1,5 @@
 package net.xdclass.util;
+
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class CommonUtil {
     /**
      * 获取ip
+     *
      * @param request
      * @return
      */
@@ -60,19 +62,20 @@ public class CommonUtil {
                     ipAddress.length() > 15) {
                 // "***.***.***.***".length()
                 // = 15
-                if (ipAddress.indexOf(",") > 0)
-                {
+                if (ipAddress.indexOf(",") > 0) {
                     ipAddress =
                             ipAddress.substring(0, ipAddress.indexOf(","));
                 }
             }
         } catch (Exception e) {
-            ipAddress="";
+            ipAddress = "";
         }
         return ipAddress;
     }
+
     /**
      * description:MD5加密
+     *
      * @param data
      * @return {@link String}
      * @author: duruijuan
@@ -96,8 +99,10 @@ public class CommonUtil {
         }
         return null;
     }
+
     /**
      * description:获取验证码随机数
+     *
      * @param length
      * @return String
      * @author: duruijuan
@@ -112,26 +117,49 @@ public class CommonUtil {
         }
         return stringBuilder.toString();
     }
+
     /**
      * description:获取当前时间戳
+     *
      * @param
      * @return long
      * @author: duruijuan
      * @since: 2025-06-06 16:51
      **/
-    public static long getCurrentTimestamp(){
+    public static long getCurrentTimestamp() {
         return System.currentTimeMillis();
     }
+
     /**
      * description:生成uuid
+     *
      * @param
      * @return String
      * @author: duruijuan
      * @since: 2025-06-07 17:25
      **/
-    public static String generateUUID(){
-        return UUID.randomUUID().toString().replaceAll("_","").substring(0,32);
+    public static String generateUUID() {
+        return UUID.randomUUID().toString().replaceAll("_", "").substring(0, 32);
 
     }
 
+    /**
+     * description:获取随机长度的串
+     *
+     * @param length
+     * @return String
+     * @author: duruijuan
+     * @since: 2025-06-08 14:25
+     **/
+    private static final String ALL_CHAR_NUM = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    //加盐，每个⼈的⼀般都不⼀样
+    public static String getStringNumRandom(int length) {
+        //⽣成随机数字和字⺟,
+        Random random = new Random();
+        StringBuilder saltString = new StringBuilder(length);
+        for (int i = 1; i <= length; ++i) {
+            saltString.append(ALL_CHAR_NUM.charAt(random.nextInt(ALL_CHAR_NUM.length())));
+        }
+        return saltString.toString();
+    }
 }

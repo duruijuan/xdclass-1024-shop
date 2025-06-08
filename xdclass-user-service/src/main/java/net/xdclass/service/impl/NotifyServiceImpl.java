@@ -33,7 +33,7 @@ public class NotifyServiceImpl implements NotifyService {
     //验证码标题
     private static final String SUBJECT = "小滴课堂验证码";
     //验证码内容
-    private static final String CONTENT = "您的验证码是%s,有效时间是60秒，不要告诉别人";
+    private static final String CONTENT = "您的验证码是%s,有效时间是10分钟，不要告诉别人";
     @Autowired
     private StringRedisTemplate redisTemplate;
     /**
