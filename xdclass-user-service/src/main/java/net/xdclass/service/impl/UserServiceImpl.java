@@ -3,6 +3,7 @@ package net.xdclass.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import net.xdclass.Model.LoginUser;
 import net.xdclass.enums.BizCodeEnum;
 import net.xdclass.enums.SendCodeEnum;
 import net.xdclass.mapper.UserMapper;
@@ -12,11 +13,13 @@ import net.xdclass.request.UserRegisterRequest;
 import net.xdclass.service.NotifyService;
 import net.xdclass.service.UserService;
 import net.xdclass.util.CommonUtil;
+import net.xdclass.util.JWTUtil;
 import net.xdclass.util.JsonData;
 
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -38,6 +41,8 @@ public class UserServiceImpl implements UserService {
     private NotifyService notifyService;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * description:用户注册 邮箱验证码验证 密码加密（TODO） 账号唯⼀性检查(TODO) 插⼊数据库 新注册⽤户福利发放(TODO)
@@ -85,10 +90,10 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
     /**
-     * description:
-     * 1.根据Mail去数据库找有没有这条记录
-     * 2.有的话就用秘钥+用户传递的明文密码加密，再和数据库的密文进行匹配
+     * description: 1.根据Mail去数据库找有没有这条记录 2.有的话就用秘钥+用户传递的明文密码加密，再和数据库的密文进行匹配
+     *
      * @param userLoginRequest
      * @return JsonData
      * @author: duruijuan
@@ -96,22 +101,29 @@ public class UserServiceImpl implements UserService {
      **/
     @Override
     public JsonData login(UserLoginRequest userLoginRequest) {
-        List<UserDO> userDOList=userMapper.selectList(new QueryWrapper<UserDO>().eq("mail",userLoginRequest.getMail()));
-        if(userDOList!=null && userDOList.size()==1){
+        List<UserDO> userDOList = userMapper.selectList(new QueryWrapper<UserDO>().eq("mail", userLoginRequest.getMail()));
+        if (userDOList != null && userDOList.size() == 1) {
             //已经注册
-            UserDO userDO=userDOList.get(0);
-            String cryptPwd=Md5Crypt.md5Crypt(userLoginRequest.getPwd().getBytes(),userDO.getSecret());
-            if(cryptPwd.equals(userDO.getPwd())){
+            UserDO userDO = userDOList.get(0);
+            String cryptPwd = Md5Crypt.md5Crypt(userLoginRequest.getPwd().getBytes(), userDO.getSecret());
+            if (cryptPwd.equals(userDO.getPwd())) {
                 //登录成功，生成token TODO
+                LoginUser loginUser = new LoginUser();
+                BeanUtils.copyProperties(userDO, loginUser);
+                String accessToken = JWTUtil.geneJsonWebToken(loginUser);
+                //accessToken过期时间
+                //UUID生成一个token
+                //String  refreshToken=CommonUtil.generateUUID();
+                //redisTemplate.opsForValue().set(refreshToken,"1",1000*60*60*24*30);
+                return JsonData.buildSuccess(accessToken);
 
 
-            }else {
+            } else {
                 //登陆失败
                 return JsonData.buildResult(BizCodeEnum.ACCOUNT_PWD_ERROR);
             }
 
-            return null;
-        }else{
+        } else {
             //未注册
             return JsonData.buildResult(BizCodeEnum.ACCOUNT_UNREGISTER);
         }
