@@ -1,4 +1,4 @@
-package net.xdclass.Interceptor;
+package net.xdclass.interceptor;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.jsonwebtoken.Claims;
