@@ -4,16 +4,15 @@ package net.xdclass.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import net.xdclass.enums.BizCodeEnum;
 import net.xdclass.exception.BizException;
 import net.xdclass.model.AddressDO;
+import net.xdclass.model.AddressVO;
+import net.xdclass.request.AddressAddRequest;
 import net.xdclass.service.AddressService;
 import net.xdclass.util.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -29,16 +28,40 @@ import org.springframework.web.bind.annotation.RestController;
 public class AddressController {
     @Autowired
     private AddressService addressService;
+
     @ApiOperation("根据id查找地址详情")
     @GetMapping("/find/{address_id}")
-    public Object detail(@ApiParam(value = "地址id",required = true)
-                        @PathVariable("address_id") long addressId){
-       AddressDO addressDO=addressService.detail(addressId);
-        //int i=1/0;
-//        if(addressId==1){
-//            throw new BizException(-1,"测试自定义异常");
-//        }
-       return JsonData.buildSuccess(addressDO);
+    public Object detail(@ApiParam(value = "地址id", required = true)
+                         @PathVariable("address_id") long addressId) {
+        AddressVO addressVO = addressService.detail(addressId);
+
+        return addressVO == null ? JsonData.buildResult(BizCodeEnum.ADDRESS_NO_EXIT) : JsonData.buildSuccess(addressVO);
+    }
+
+    @ApiOperation("新增收货地址")
+    @PostMapping("/add")
+    public JsonData add(@ApiParam(value = "地址对象", required = true)
+                        @RequestBody AddressAddRequest addressAddRequest) {
+        int rows = addressService.add(addressAddRequest);
+        return JsonData.buildSuccess();
+
+
+    }
+
+    /**
+     * description:删除指定收货地址
+     *
+     * @param addressId
+     * @return JsonData
+     * @author: duruijuan
+     * @since: 2025-06-11 20:27
+     **/
+    @ApiOperation("删除收货地址")
+    @PostMapping("/delete/{address_id}")
+    public JsonData delete(@ApiParam(value = "地址id", required = true)
+                           @PathVariable("address_id") int addressId) {
+        int rows = addressService.delete(addressId);
+        return rows == 1 ? JsonData.buildSuccess() : JsonData.buildResult(BizCodeEnum.ADDRESS_DEL_FAIL);
     }
 }
 
