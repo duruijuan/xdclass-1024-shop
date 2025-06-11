@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import net.xdclass.enums.BizCodeEnum;
+import net.xdclass.model.UserVO;
 import net.xdclass.request.UserLoginRequest;
 import net.xdclass.request.UserRegisterRequest;
 import net.xdclass.service.FileService;
@@ -73,6 +74,20 @@ public class UserController {
         String ip=CommonUtil.getIpAddr(request);
         JsonData jsonData = userService.login(userLoginRequest);
         return jsonData;
+    }
+    /**
+     * description:用户个人信息查询
+     * @param
+     * @return JsonData
+     * @author: duruijuan
+     * @since: 2025-06-11 11:41
+     **/
+    @GetMapping("/detail")
+    @ApiOperation("个人信息查询")
+    public JsonData detail(){
+        UserVO userVO=userService.findUserDetail();
+        return JsonData.buildSuccess(userVO);
+
     }
 //     刷新token方案
 //    @PostMapping("/refresh_token")

@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.xdclass.Model.LoginUser;
 import net.xdclass.enums.BizCodeEnum;
 import net.xdclass.enums.SendCodeEnum;
+import net.xdclass.interceptor.LoginInterceptor;
 import net.xdclass.mapper.UserMapper;
 import net.xdclass.model.UserDO;
+import net.xdclass.model.UserVO;
 import net.xdclass.request.UserLoginRequest;
 import net.xdclass.request.UserRegisterRequest;
 import net.xdclass.service.NotifyService;
@@ -108,7 +110,7 @@ public class UserServiceImpl implements UserService {
             String cryptPwd = Md5Crypt.md5Crypt(userLoginRequest.getPwd().getBytes(), userDO.getSecret());
             if (cryptPwd.equals(userDO.getPwd())) {
                 //登录成功，生成token TODO
-                LoginUser loginUser = new LoginUser();
+                LoginUser loginUser =LoginUser.builder().build();
                 BeanUtils.copyProperties(userDO, loginUser);
                 String accessToken = JWTUtil.geneJsonWebToken(loginUser);
                 //accessToken过期时间
@@ -127,6 +129,25 @@ public class UserServiceImpl implements UserService {
             //未注册
             return JsonData.buildResult(BizCodeEnum.ACCOUNT_UNREGISTER);
         }
+
+    }
+    /**
+     * description:查询用户详情
+     *
+     * @param
+     * @return void
+     * @author: duruijuan
+     * @since: 2025-06-11 11:27
+     **/
+    @Override
+    public UserVO findUserDetail() {
+        LoginUser loginUser=LoginInterceptor.threadLocal.get();
+        UserDO userDO=userMapper.selectOne(new QueryWrapper<UserDO>().eq("id",loginUser.getId()));
+        UserVO userVO=new UserVO();
+        BeanUtils.copyProperties(userDO,userVO);
+        return userVO;
+
+
 
     }
 

@@ -19,13 +19,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @Slf4j
 public class InterceptorConfig implements WebMvcConfigurer {
-    @Bean
-    public LoginInterceptor loginInterceptor(){
-        return new LoginInterceptor();
-    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(loginInterceptor())
+    registry.addInterceptor(new LoginInterceptor())
             //拦截路径
             .addPathPatterns("/api/user/*/**","api/address/*/**")
             //不拦截路径，放行路径

@@ -2,6 +2,7 @@ package net.xdclass.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -14,6 +15,7 @@ import lombok.Data;
  * @version: 1.0
  */
 @Data
+@Builder
 public class LoginUser {
     /**
      * 主键

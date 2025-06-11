@@ -1,9 +1,9 @@
 package net.xdclass.service;
 
+import net.xdclass.model.UserVO;
 import net.xdclass.request.UserLoginRequest;
 import net.xdclass.request.UserRegisterRequest;
 import net.xdclass.util.JsonData;
-import springfox.documentation.spring.web.json.Json;
 
 /**
  * @projectName: xdclass-1024-shop
@@ -32,4 +32,14 @@ public interface UserService {
      **/
 
     JsonData login(UserLoginRequest userLoginRequest);
+    /**
+     * description:查询用户详情
+     *
+     * @param
+     * @return void
+     * @author: duruijuan
+     * @since: 2025-06-11 11:27
+     **/
+
+    UserVO findUserDetail();
 }

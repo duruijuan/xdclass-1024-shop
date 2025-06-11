@@ -24,15 +24,16 @@ import javax.servlet.http.HttpServletResponse;
  * @version: 1.0
  */
 @Slf4j
-public class LoginInterceptor implements HandlerInterceptor{
-    public static ThreadLocal<LoginUser> threadLocal=new ThreadLocal<>();
+public class LoginInterceptor implements HandlerInterceptor {
+    public static ThreadLocal<LoginUser> threadLocal = new ThreadLocal<>();
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String accessToken=request.getHeader("token");
-        if(accessToken==null){
-            accessToken=request.getParameter("token");
+        String accessToken = request.getHeader("token");
+        if (accessToken == null) {
+            accessToken = request.getParameter("token");
         }
-        if(StringUtils.isNotBlank(accessToken)) {
+        if (StringUtils.isNotBlank(accessToken)) {
             //不为空
             Claims claims = JWTUtil.checkJWT(accessToken);
             if (claims == null) {
@@ -41,15 +42,16 @@ public class LoginInterceptor implements HandlerInterceptor{
                 return false;
 
             }
-            long userId=Long.valueOf(claims.get("id").toString());
-            String headImg=(String) claims.get("head_img");
-            String mail=(String) claims.get("mail");
-            String name=(String) claims.get("name");
-            LoginUser loginUser=new LoginUser();
-            loginUser.setName(name);
-            loginUser.setMail(mail);
-            loginUser.setHeadImg(headImg);
-            loginUser.setId(userId);
+            long userId = Long.valueOf(claims.get("id").toString());
+            String headImg = (String) claims.get("head_img");
+            String mail = (String) claims.get("mail");
+            String name = (String) claims.get("name");
+            //建造者模式
+            LoginUser loginUser = LoginUser.builder().headImg(headImg).name(name).id(userId).mail(mail).build();
+//            loginUser.setName(name);
+//            loginUser.setMail(mail);
+//            loginUser.setHeadImg(headImg);
+//            loginUser.setId(userId);
             //通过attribute传递用户登录信息
             //request.setAttribute("loginUser",loginUser);
             //通过threadLocal传递用户登录信息 TODO
