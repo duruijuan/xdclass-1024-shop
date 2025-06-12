@@ -4,6 +4,8 @@ import net.xdclass.model.AddressDO;
 import net.xdclass.model.AddressVO;
 import net.xdclass.request.AddressAddRequest;
 
+import java.util.List;
+
 /**
  * @projectName: xdclass-1024-shop
  * @package: net.xdclass.service
@@ -30,7 +32,7 @@ public interface AddressService {
      * @author: duruijuan
      * @since: 2025-06-11 15:18
      **/
-    int add(AddressAddRequest addressAddRequest);
+    void add(AddressAddRequest addressAddRequest);
     /**
      * description:根据id删除指定地址
      * @param addressId
@@ -39,4 +41,12 @@ public interface AddressService {
      * @since: 2025-06-11 20:28
      **/
     int delete(int addressId);
+    /**
+     * description:查询用户的全部收货地址
+     * @param
+     * @return List<AddressVO>
+     * @author: duruijuan
+     * @since: 2025-06-11 20:50
+     **/
+    List<AddressVO> listUserAllAddress();
 }

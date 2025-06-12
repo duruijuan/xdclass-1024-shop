@@ -14,6 +14,8 @@ import net.xdclass.util.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  * 电商-公司收发货地址表 前端控制器
@@ -42,7 +44,7 @@ public class AddressController {
     @PostMapping("/add")
     public JsonData add(@ApiParam(value = "地址对象", required = true)
                         @RequestBody AddressAddRequest addressAddRequest) {
-        int rows = addressService.add(addressAddRequest);
+        addressService.add(addressAddRequest);
         return JsonData.buildSuccess();
 
 
@@ -57,11 +59,25 @@ public class AddressController {
      * @since: 2025-06-11 20:27
      **/
     @ApiOperation("删除收货地址")
-    @PostMapping("/delete/{address_id}")
+    @DeleteMapping("/delete/{address_id}")
     public JsonData delete(@ApiParam(value = "地址id", required = true)
                            @PathVariable("address_id") int addressId) {
         int rows = addressService.delete(addressId);
         return rows == 1 ? JsonData.buildSuccess() : JsonData.buildResult(BizCodeEnum.ADDRESS_DEL_FAIL);
+    }
+    /**
+     * description:查询用户的全部收货地址
+     * @param
+     * @return JsonData
+     * @author: duruijuan
+     * @since: 2025-06-11 20:48
+     **/
+    @ApiOperation("查询用户的全部收货地址")
+    @GetMapping("/list")
+    public JsonData findUserAllAddress(){
+        List<AddressVO> list = addressService.listUserAllAddress();
+        return JsonData.buildSuccess(list);
+
     }
 }
 

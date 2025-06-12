@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @projectName: xdclass-1024-shop
@@ -54,12 +56,12 @@ public class AddressServiceImpl implements AddressService {
      * description:新增收货地址
      *
      * @param addressAddRequest
-     * @return int
+     * @return
      * @author: duruijuan
      * @since: 2025-06-11 15:21
      **/
     @Override
-    public int add(AddressAddRequest addressAddRequest) {
+    public void add(AddressAddRequest addressAddRequest) {
         LoginUser loginUser = LoginInterceptor.threadLocal.get();
         AddressDO addressDO = new AddressDO();
         addressDO.setCreateTime(new Date());
@@ -82,7 +84,6 @@ public class AddressServiceImpl implements AddressService {
 
         log.info("新增收货地址:rows={},data={}", rows, addressDO);
 
-        return rows;
     }
     /**
      * description:根据id删除指定地址
@@ -95,5 +96,24 @@ public class AddressServiceImpl implements AddressService {
     public int delete(int addressId) {
         int rows=addressMapper.delete(new QueryWrapper<AddressDO>().eq("id",addressId));
         return rows;
+    }
+    /**
+     * description:查询用户的全部收货地址
+     * @param
+     * @return List<AddressVO>
+     * @author: duruijuan
+     * @since: 2025-06-11 20:50
+     **/
+    @Override
+    public List<AddressVO> listUserAllAddress() {
+        LoginUser loginUser=LoginInterceptor.threadLocal.get();
+        List<AddressDO> list=addressMapper.selectList(new QueryWrapper<AddressDO>().eq("user_id",loginUser.getId()));
+        //lamba表达式
+        List<AddressVO> addressDOList=list.stream().map(obj->{
+            AddressVO addressVO=new AddressVO();
+            BeanUtils.copyProperties(obj,addressVO);
+            return addressVO;
+        }).collect(Collectors.toList());
+        return addressDOList;
     }
 }
