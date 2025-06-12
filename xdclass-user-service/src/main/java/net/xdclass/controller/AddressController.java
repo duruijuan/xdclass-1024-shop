@@ -4,8 +4,10 @@ package net.xdclass.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import net.xdclass.Model.LoginUser;
 import net.xdclass.enums.BizCodeEnum;
 import net.xdclass.exception.BizException;
+import net.xdclass.interceptor.LoginInterceptor;
 import net.xdclass.model.AddressDO;
 import net.xdclass.model.AddressVO;
 import net.xdclass.request.AddressAddRequest;
@@ -35,6 +37,7 @@ public class AddressController {
     @GetMapping("/find/{address_id}")
     public Object detail(@ApiParam(value = "地址id", required = true)
                          @PathVariable("address_id") long addressId) {
+
         AddressVO addressVO = addressService.detail(addressId);
 
         return addressVO == null ? JsonData.buildResult(BizCodeEnum.ADDRESS_NO_EXIT) : JsonData.buildSuccess(addressVO);
